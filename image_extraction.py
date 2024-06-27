@@ -24,7 +24,6 @@ for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reih
 
     # Da in Datensatz jede Seite einzeln enthalten ist, wird hier geguckt, ob ID schonmal verwendet wurde
     if id != id_old and not os.path.exists(path):
-        print("HI")
 
         # URL zusammenstellen, für API anfrage
         url_zeitung = f"{base_url}/{id}/source/record?oauth_consumer_key={api_key}"

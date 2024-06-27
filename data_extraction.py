@@ -30,7 +30,7 @@ def create_year_list(start_year, end_year):
 
 
 
-years = create_year_list(1900, 1900)
+years = create_year_list(1914, 1945)
 path = "newspapers"
 
 if not os.path.exists(path):

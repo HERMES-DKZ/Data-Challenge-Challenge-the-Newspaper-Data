@@ -5,26 +5,21 @@ import os
 import heapq
 
 # Lade deine Datensätze
-#Hier die Datei eintragen, die als Grundlage verwendet wird
-zeitungen = pd.read_pickle("newspapers_ger_1914_part_1") 
+zeitungen = pd.read_pickle("newspapers/newspapers_ger_1914_part_1")
 
-#Für die API wird ein Schlüssel und ein Account bei der DDB benötigt. Unter folgendem Link kann ein Account erstellt werden und anschließend kostenlos ein API-Key beantragt werden: https://www.deutsche-digitale-bibliothek.de/user/apikey
-api_key = ""                                                                                              
-base_url = "https://api.deutsche-digitale-bibliothek.de/items"                                            
+api_key = "MkkL6axpVUGctWeMTbky4gpGu357FQvivjk3LK4J8rmH93aDQ6o1711377019931"
+base_url = "https://api.deutsche-digitale-bibliothek.de/items"
 headers = {'accept': 'application/xml'}
-if not os.path.exists(images):
-    os.mkdir(images)
 download_dir = "images"
-
 
 id_old=1
 for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reihen
     id = data['page_id'][:32]                    # Zuschneiden der page_id, da dies die ID der Zeitschrift ist
-
+    path = f"{download_dir}/{id}"
 
 
     # Da in Datensatz jede Seite einzeln enthalten ist, wird hier geguckt, ob ID schonmal verwendet wurde
-    if id != id_old:
+    if id != id_old and not os.path.exists(path):
 
         # URL zusammenstellen, für API anfrage
         url_zeitung = f"{base_url}/{id}/source/record?oauth_consumer_key={api_key}"
@@ -74,9 +69,9 @@ for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reih
         largest_images = [pair[0] for pair in largest_images_sorted]
 
         counter = 1
-        path = f"{download_dir}/{id}"
-        if not os.path.exists(path):
-            os.makedirs(path)
+
+
+        os.makedirs(path)
 
         for image in largest_images:
             with open(f"{path}/{counter}.jpg", 'wb') as f:
@@ -85,3 +80,6 @@ for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reih
 
 
         id_old = id
+
+
+

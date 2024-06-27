@@ -39,7 +39,9 @@ if not os.path.exists(path):
 
 for year in years:
 
-    year_dir = path
+    year_dir = f"{path}/{year}/"
+    if not os.path.exists(year_dir):
+        os.makedirs(year_dir)
     # Download and save newspapers in 3 parts for each year
     for part, (start_date, end_date) in enumerate([
         ('01-01', '04-30'),

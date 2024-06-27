@@ -1,5 +1,6 @@
 import pandas as pd
 from ddbapi import zp_pages
+import os
 
 
 def article_extractor(search_dict):
@@ -13,9 +14,6 @@ def article_extractor(search_dict):
                   publication_date= f"[{search_dict['date_begin']}T12:00:00Z TO {search_dict['date_end']}T12:00:00Z]")
 
     return newspapers
-
-
-
 
 def create_year_list(start_year, end_year):
 
@@ -32,8 +30,8 @@ def create_year_list(start_year, end_year):
 
 
 
-years = create_year_list(1914, 1945)
-path = newspapers
+years = create_year_list(1900, 1900)
+path = "newspapers"
 
 if not os.path.exists(path):
     os.makedirs(path)
@@ -41,34 +39,17 @@ if not os.path.exists(path):
 
 for year in years:
 
-
-    search_dict= {
-        'language': 'ger',
-        'date_begin': f'{year}-01-01',
-        'date_end': f'{year}-04-30'
+    year_dir = path
+    # Download and save newspapers in 3 parts for each year
+    for part, (start_date, end_date) in enumerate([
+        ('01-01', '04-30'),
+        ('05-01', '08-31'),
+        ('09-01', '12-31')
+        ], 1):
+        search_dict = {
+            'language': 'ger',
+            'date_begin': f'{year}-{start_date}',
+            'date_end': f'{year}-{end_date}'
         }
-        
-    df_challenge= article_extractor(search_dict)
-    df_challenge.to_pickle(f"{path}/newspapers_{search_dict['language']}_{year}_part_1")
-
-
-
-    search_dict= {
-        'language': 'ger',
-        'date_begin': f'{year}-05-01',
-        'date_end': f'{year}-08-31'
-        }
-        
-    df_challenge= article_extractor(search_dict)
-    df_challenge.to_pickle(f"{path}/newspapers_{search_dict['language']}_{year}_part_2")
-
-
-
-    search_dict= {
-        'language': 'ger',
-        'date_begin': f'{year}-09-01',
-        'date_end': f'{year}-12-31'
-        }
-        
-    df_challenge_ger= article_extractor(search_dict)
-    df_challenge_ger.to_pickle(f"{path}/newspapers_{search_dict['language']}_{year}_part_3")
+        df_challenge = article_extractor(search_dict)
+        df_challenge.to_pickle(os.path.join(year_dir, f"newspapers_{search_dict['language']}_{year}_part_{part}"))

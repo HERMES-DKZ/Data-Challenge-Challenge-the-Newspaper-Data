@@ -5,12 +5,16 @@ import os
 import heapq
 
 # Lade deine Datensätze
-zeitungen = pd.read_pickle("newspapers/newspapers_ger_1914_part_1")
 
-api_key = "MkkL6axpVUGctWeMTbky4gpGu357FQvivjk3LK4J8rmH93aDQ6o1711377019931"
+year = 1914
+part = 1
+zeitungen = pd.read_pickle(f"newspapers/{year}/newspapers_ger_{year}_part_{part}")
+
+api_key = ""                                                                # Hier eigenen API-Key eintragen
 base_url = "https://api.deutsche-digitale-bibliothek.de/items"
 headers = {'accept': 'application/xml'}
-download_dir = "images"
+download_dir = f"images/{year}"
+
 
 id_old=1
 for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reihen
@@ -20,6 +24,7 @@ for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reih
 
     # Da in Datensatz jede Seite einzeln enthalten ist, wird hier geguckt, ob ID schonmal verwendet wurde
     if id != id_old and not os.path.exists(path):
+        print("HI")
 
         # URL zusammenstellen, für API anfrage
         url_zeitung = f"{base_url}/{id}/source/record?oauth_consumer_key={api_key}"

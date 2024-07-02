@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-zeitungen = pd.read_pickle('newspapers_example')                      # Import des Beispieldatensatzes, besteht aus den ersten 10.000 Einträgen des Pakets aus dem Jahre 1914 Part 1
+zeitungen = pd.read_pickle('newspapers/newspapers_example')                      # Import des Beispieldatensatzes, besteht aus den ersten 10.000 Einträgen des Pakets aus dem Jahre 1914 Part 1
 
 
 print(zeitungen.head())                                 # Ausgabe der ersten 10 Einträge des Dataframes

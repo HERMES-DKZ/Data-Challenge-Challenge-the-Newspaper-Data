@@ -6,16 +6,17 @@ import heapq
 
 # Lade deine Datensätze
 
+
 year = 1914
 part = 1
-zeitungen = pd.read_pickle(f"newspapers/{year}/newspapers_ger_{year}_part_{part}")
+zeitungen = pd.read_pickle(f"newspapers/newspapers_ger_{year}_part_{part}")
 
 api_key = ""                                                                # Hier eigenen API-Key eintragen
 base_url = "https://api.deutsche-digitale-bibliothek.de/items"
-headers = {'accept': 'application/xml'}
 download_dir = f"images/{year}"
 
 
+headers = {'accept': 'application/xml'}
 id_old=1
 for index, data in zeitungen.iterrows():         # Iteriere durch DataFrame-Reihen
     id = data['page_id'][:32]                    # Zuschneiden der page_id, da dies die ID der Zeitschrift ist
